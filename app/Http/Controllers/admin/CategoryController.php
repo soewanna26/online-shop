@@ -94,6 +94,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($categoryId);
         if (empty($category)) {
+            $request->session()->flash('error', 'Record Not Found');
             return redirect()->route('categories.index');
         }
         return view('admin.category.edit', compact('category'));

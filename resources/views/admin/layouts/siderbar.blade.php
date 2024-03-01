@@ -26,13 +26,13 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="subcategory.html" class="nav-link">
+                    <a href="{{route('sub_categories.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>Sub Category</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="brands.html" class="nav-link">
+                    <a href="{{route('brands.index')}}" class="nav-link">
                         <svg class="h-6 nav-icon w-6 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"

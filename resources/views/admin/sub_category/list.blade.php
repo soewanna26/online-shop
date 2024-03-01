@@ -1,7 +1,6 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    </section>
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid my-2">
@@ -125,9 +124,9 @@
 @section('customJs')
     <script>
         function deleteCategory(id) {
-            var url = '{{ route('categories.delete', 'Id') }}';
+            var url = '{{ route('sub_categories.delete', 'Id') }}';
             var newUrl = url.replace("Id", id);
-            if (confirm('Are you sure you want to delete this category')) {
+            if (confirm('Are you sure you want to delete this Sub Category')) {
                 $.ajax({
                     url: newUrl,
                     type: 'delete',
@@ -138,7 +137,7 @@
                     },
                     success: function(response) {
                         if (response["status"]) {
-                            window.location.href = '{{ route('categories.index') }}';
+                            window.location.href = '{{ route('sub_categories.index') }}';
 
                         }
                     },
