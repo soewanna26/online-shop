@@ -4,10 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CategoryController extends Controller
 {
@@ -55,12 +58,18 @@ class CategoryController extends Controller
                 $extArry = explode('.', $tempImage->name); // Array([0] => image name)
                 $ext = last($extArry);
 
-                $newImageName = $category->id . '.' . $ext;
-                $sPath = public_path() . '/temp/' . $tempImage->name;
-                $dPath = public_path() . '/uploads/category/' . $newImageName;
+                $newImageName = $category->id.'.'.$ext;
+                $sPath = public_path().'/temp/'.$tempImage->name;
+                $dPath = public_path().'/uploads/category/'.$newImageName;
 
                 File::copy($sPath, $dPath);
 
+                //generate tumb image
+                $manager = new ImageManager(new Driver());
+                $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
+                $image = $manager->read($sPath);
+                $image->resize(450,600);
+                $image->save($dPath);
                 $category->image = $newImageName;
                 $category->save();
             }
@@ -171,7 +180,8 @@ class CategoryController extends Controller
                 'message' => 'Category Not Found',
             ]);
         }
-        File::delete(public_path() . '/uploads/category/' . $category->image);
+        File::delete(public_path().'/uploads/category/'.$category->image);
+        File::delete(public_path().'/uploads/category/thumb/'.$category->image);
         $category->delete();
 
         $request->session()->flash('success', 'Category deleted successfully');

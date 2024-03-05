@@ -12,8 +12,8 @@ class TempImagesController extends Controller
 {
     public function create(Request $request)
     {
-        $image = $request->image;
-        if (!empty($image)) {
+        if ($request->image) {
+            $image = $request->image;
             $ext = $image->getClientOriginalExtension();
             $newName = time() . '.' . $ext;
 
@@ -27,8 +27,8 @@ class TempImagesController extends Controller
             $manager = new ImageManager(new Driver());
 
             // Set the source and destination paths
-            $image = $manager->read(public_path().'/temp/'.$newName);
             $destPath = public_path() . '/temp/thumb/' . $newName;
+            $image = $manager->read(public_path() . '/temp/' . $newName);
             $image->resize(300, 274);
             $image->save($destPath);
 
