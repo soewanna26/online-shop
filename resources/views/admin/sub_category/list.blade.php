@@ -47,8 +47,8 @@
                             <tr>
                                 <th width="60">ID</th>
                                 <th>Name</th>
-                                <th>Slug</th>
                                 <th>Category</th>
+                                <th>Slug</th>
                                 <th width="100">Status</th>
                                 <th width="100">Action</th>
                             </tr>
@@ -59,8 +59,8 @@
                                     <tr>
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
-                                        <td>{{ $category->slug }}</td>
                                         <td>{{ $category->categoryName }}</td>
+                                        <td>{{ $category->slug }}</td>
                                         <td>
                                             @if ($category->status == 1)
                                                 <svg class="text-success-500 h-6 w-6 text-success"

@@ -32,7 +32,8 @@
                                         <option value="">Select A Category</option>
                                         @if ($categories->isNotEmpty())
                                             @foreach ($categories as $category)
-                                                <option {{$subCategory->category_id == $category->id ? 'selected' : ''}} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option {{ $subCategory->category_id == $category->id ? 'selected' : '' }}
+                                                    value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -42,16 +43,16 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" value="{{$subCategory->name}}"
-                                        placeholder="Name">
+                                    <input type="text" name="name" id="name" class="form-control"
+                                        value="{{ $subCategory->name }}" placeholder="Name">
                                     <p></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
-                                    <input type="text" name="slug" id="slug" class="form-control" value="{{$subCategory->slug}}"
-                                        placeholder="Slug" readonly>
+                                    <input type="text" name="slug" id="slug" class="form-control"
+                                        value="{{ $subCategory->slug }}" placeholder="Slug">
                                     <p></p>
                                 </div>
                             </div>
@@ -59,8 +60,21 @@
                                 <div class="mb-3">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value="1" {{$subCategory->status == 1 ? 'selected' : ''}}>Active</option>
-                                        <option value="0" {{$subCategory->status == 0 ? 'selected' : ''}}>Block</option>
+                                        <option value="1" {{ $subCategory->status == 1 ? 'selected' : '' }}>Active
+                                        </option>
+                                        <option value="0" {{ $subCategory->status == 0 ? 'selected' : '' }}>Block
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="showHome">Show on Home</label>
+                                    <select name="showHome" id="showHome" class="form-control">
+                                        <option value="Yes" {{ $subCategory->showHome == 'Yes' ? 'selected' : '' }}>Yes
+                                        </option>
+                                        <option value="No" {{ $subCategory->showHome == 'No' ? 'selected' : '' }}>No
+                                        </option>
                                     </select>
                                 </div>
                             </div>

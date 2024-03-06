@@ -50,6 +50,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showHome = $request->showHome;
             $category->save();
 
             //save Image
@@ -58,17 +59,17 @@ class CategoryController extends Controller
                 $extArry = explode('.', $tempImage->name); // Array([0] => image name)
                 $ext = last($extArry);
 
-                $newImageName = $category->id.'.'.$ext;
-                $sPath = public_path().'/temp/'.$tempImage->name;
-                $dPath = public_path().'/uploads/category/'.$newImageName;
+                $newImageName = $category->id . '.' . $ext;
+                $sPath = public_path() . '/temp/' . $tempImage->name;
+                $dPath = public_path() . '/uploads/category/' . $newImageName;
 
                 File::copy($sPath, $dPath);
 
                 //generate tumb image
                 $manager = new ImageManager(new Driver());
-                $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
+                $dPath = public_path() . '/uploads/category/thumb/' . $newImageName;
                 $image = $manager->read($sPath);
-                $image->resize(450,600);
+                $image->resize(450, 600);
                 $image->save($dPath);
                 $category->image = $newImageName;
                 $category->save();
@@ -131,6 +132,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showHome = $request->showHome;
             $category->save();
 
             $oldImage = $category->image;
@@ -145,6 +147,12 @@ class CategoryController extends Controller
                 $dPath = public_path() . '/uploads/category/' . $newImageName;
 
                 File::copy($sPath, $dPath);
+                //thumb
+                $manager = new ImageManager(new Driver());
+                $dPath = public_path() . '/uploads/category/thumb/' . $newImageName;
+                $image = $manager->read($sPath);
+                $image->resize(450, 600);
+                $image->save($dPath);
 
                 $category->image = $newImageName;
                 $category->save();
@@ -180,8 +188,8 @@ class CategoryController extends Controller
                 'message' => 'Category Not Found',
             ]);
         }
-        File::delete(public_path().'/uploads/category/'.$category->image);
-        File::delete(public_path().'/uploads/category/thumb/'.$category->image);
+        File::delete(public_path() . '/uploads/category/' . $category->image);
+        File::delete(public_path() . '/uploads/category/thumb/' . $category->image);
         $category->delete();
 
         $request->session()->flash('success', 'Category deleted successfully');
