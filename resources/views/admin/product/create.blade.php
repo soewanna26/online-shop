@@ -43,9 +43,25 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
+                                            <label for="short_description">Short Description</label>
+                                            <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote"
+                                                placeholder="Short Description"></textarea>
+                                            <p class="error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
                                             <label for="description">Description</label>
                                             <textarea name="description" id="description" cols="30" rows="10" class="summernote"
                                                 placeholder="Description"></textarea>
+                                            <p class="error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="shipping_returns">Shipping Returns</label>
+                                            <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote"
+                                                placeholder="Shipping Returns"></textarea>
                                             <p class="error"></p>
                                         </div>
                                     </div>
@@ -130,6 +146,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Realated Products</h2>
+                                <div class="mb-3">
+                                    <select name="related_products[]" id="related_products" class="related_product w-100"
+                                        multiple>
+                                    </select>
+                                    <p class="error"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card mb-3">
@@ -211,6 +238,20 @@
 @endsection
 @section('customJs')
     <script>
+        $('.related_product').select2({
+            ajax: {
+                url: '{{ route('products.getProducts') }}',
+                dataType: 'json',
+                tags: true,
+                multiple: true,
+                minimumInputLength: 3,
+                processResults: function(data) {
+                    return {
+                        results: data.tags
+                    };
+                }
+            }
+        });
         $("#productForm").submit(function(event) {
             event.preventDefault();
             var formArray = $(this).serializeArray();
@@ -305,12 +346,13 @@
                  </div>`;
                 $("#product-gallery").append(html);
             },
-            complete:function(file){
+            complete: function(file) {
                 this.removeFile(file);
             }
         });
+
         function deleteImage($id) {
-            $('#image-row-'+$id).remove();
+            $('#image-row-' + $id).remove();
         }
     </script>
 @endsection

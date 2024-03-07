@@ -55,7 +55,7 @@ class ShopController extends Controller
             $products = $products->orderBy('id', 'DESC');
         }
 
-        $products = $products->get();
+        $products = $products->paginate(6);
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;
@@ -67,5 +67,22 @@ class ShopController extends Controller
         $data['priceMax'] = (intval($request->get('price_max')) == 0) ? 1000000 : intval($request->get('price_max'));
         $data['sort'] = $request->get('sort');
         return view('front.shop', $data);
+    }
+    public function product($slug)
+    {
+        $product = Product::where('slug', $slug)->with('product_images')->first();
+        // dd($product);
+        if ($product == null) {
+            abort(404);
+        }
+        //fetch related products
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',', $product->related_products);
+            $relatedProducts = Product::whereIn('id', $productArray)->with('product_images')->get();
+        }
+        $data['product'] = $product;
+        $data['relatedProducts'] = $relatedProducts;
+        return view('front.product', $data);
     }
 }

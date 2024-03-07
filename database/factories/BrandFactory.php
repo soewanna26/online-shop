@@ -4,10 +4,11 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Brand>
  */
-class CategoryFactory extends Factory
+class BrandFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -23,7 +24,6 @@ class CategoryFactory extends Factory
             'name' => $name,
             'slug' => $slug,
             'status' => rand(0,1),
-            'showHome' => rand(0, 1) ? "Yes" : "No",
         ];
     }
 }

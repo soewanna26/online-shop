@@ -56,7 +56,7 @@
         <div class="container">
             <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                 <div class="col-lg-4 logo">
-                    <a href="index.php" class="text-decoration-none">
+                    <a href="{{route('front.home')}}" class="text-decoration-none">
                         <span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
                         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
                     </a>
@@ -102,14 +102,15 @@
                                         aria-expanded="false">
                                         {{ $category->name }}
                                     </button>
-                                    @if ($category->sub_category->isNotEmpty())
-                                        @foreach ($category->sub_category as $sub_category)
-                                            <ul class="dropdown-menu dropdown-menu-dark">
+                                    <ul class="dropdown-menu dropdown-menu-dark">
+                                        @if ($category->sub_category->isNotEmpty())
+                                            @foreach ($category->sub_category as $subCategory)
                                                 <li><a class="dropdown-item nav-link"
-                                                        href="#">{{ $sub_category->name }}</a></li>
-                                            </ul>
-                                        @endforeach
-                                    @endif
+                                                        href="{{ route('front.shop', [$category->slug, $subCategory->slug]) }}">{{ $subCategory->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
 
                                 </li>
                             @endforeach
@@ -185,7 +186,7 @@
     <script src="{{ asset('front-assets/js/custom.js') }}"></script>
 
     {{-- iion-rangeslider --}}
-    <script src="{{asset('front-assets/js/ion.rangeSlider.min.js')}}"></script>
+    <script src="{{ asset('front-assets/js/ion.rangeSlider.min.js') }}"></script>
 
     <script>
         window.onscroll = function() {

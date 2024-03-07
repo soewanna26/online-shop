@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
     {{-- summernote --}}
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
+    {{-- select2 --}}
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
 
 </head>
 
@@ -98,13 +100,15 @@
     <script src="{{ asset('assets/plugins/dropzone/min/dropzone.min.js') }}"></script>
     {{-- summernote --}}
     <script src="{{ asset('assets/plugins/summernote/summernote.min.js') }}"></script>
+    {{-- select2 --}}
+    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
-                'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $(document).ready(function(){
+        $(document).ready(function() {
             $(".summernote").summernote({
                 height: 250,
             });
