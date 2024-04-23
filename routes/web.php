@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
@@ -28,14 +29,29 @@ use Illuminate\Support\Str;
 */
 
 // Route::get('/', [AdminLoginController::class, 'index']);
-Route::get('/',[FrontController::class, 'index'])->name('front.home');
-Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class, 'index'])->name('front.shop');
-Route::get('/product/{slug}',[ShopController::class, 'product'])->name('front.product');
-Route::get('/cart',[CartController::class, 'cart'])->name('front.cart');
-Route::post('/add-to-cart',[CartController::class, 'addToCart'])->name('front.addToCart');
-Route::post('/update-cart',[CartController::class, 'updateCart'])->name('front.updateCart');
-Route::post('/delete-item',[CartController::class, 'deleteItem'])->name('front.deleteItem.cart');
+Route::get('/', [FrontController::class, 'index'])->name('front.home');
+Route::get('/shop/{categorySlug?}/{subCategorySlug?}', [ShopController::class, 'index'])->name('front.shop');
+Route::get('/product/{slug}', [ShopController::class, 'product'])->name('front.product');
+Route::get('/cart', [CartController::class, 'cart'])->name('front.cart');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('front.addToCart');
+Route::post('/update-cart', [CartController::class, 'updateCart'])->name('front.updateCart');
+Route::post('/delete-item', [CartController::class, 'deleteItem'])->name('front.deleteItem.cart');
+Route::get('/checkout',[CartController::class, 'checkout'])->name('front.checkout');
+Route::post('/process-checkout',[CartController::class, 'processCheckout'])->name('front.processCheckout');
+Route::get('/thanks/{orderId}',[CartController::class, 'thankyou'])->name('front.thankyou');
 
+Route::group(['prefix' => 'account'], function () {
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/register', [AuthController::class, 'register'])->name('account.register');
+        Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
+        Route::get('/login', [AuthController::class, 'login'])->name('account.login');
+        Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('account.authenticate');
+    });
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
+    });
+});
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'admin.guest'], function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
@@ -62,21 +78,21 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/sub-categories/{subcategory}', [SubCategoryController::class, 'destroy'])->name('sub_categories.delete');
 
         //brand
-        Route::get('/brands',[BrandController::class, 'index'])->name('brands.index');
-        Route::get('/brands/create',[BrandController::class,'create'])->name('brands.create');
-        Route::post('/brands' ,[BrandController::class,'store'])->name('brands.store');
-        Route::get('/brands/{brand}/edit', [BrandController::class,'edit'])->name('brands.edit');
-        Route::put('brands/{brand}',[BrandController::class,'update'])->name('brands.update');
-        Route::delete('/brands/{brand}', [BrandController::class,'destroy'])->name('brands.delete');
+        Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+        Route::get('/brands/create', [BrandController::class, 'create'])->name('brands.create');
+        Route::post('/brands', [BrandController::class, 'store'])->name('brands.store');
+        Route::get('/brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+        Route::put('brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
+        Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('brands.delete');
 
         //product
-        Route::get('/products',[ProductController::class,'index'])->name('products.index');
-        Route::get('/products/create',[ProductController::class,'create'])->name('products.create');
-        Route::post('/products',[ProductController::class,'store'])->name('products.store');
-        Route::get('/products/{product}/edit',[ProductController::class,'edit'])->name('products.edit');
-        Route::put('/products/{product}',[ProductController::class, 'update'])->name('products.update');
-        Route::delete('/products/{product}',[ProductController::class, 'destroy'])->name('products.delete');
-        Route::get('/get-products',[ProductController::class,'getProducts'])->name('products.getProducts');
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
+        Route::get('/get-products', [ProductController::class, 'getProducts'])->name('products.getProducts');
 
         //productsubcategory
         Route::get('/product-subcategories', [ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');
