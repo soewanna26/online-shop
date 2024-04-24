@@ -112,7 +112,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <input type="text" name="mobile" id="mobile" class="form-control"
-                                            value="{{ !empty($customerAddress) ? $customerAddress->mobile : '' }}"
+                                                value="{{ !empty($customerAddress) ? $customerAddress->mobile : '' }}"
                                                 placeholder="Mobile No.">
                                             <p></p>
                                         </div>
@@ -148,11 +148,12 @@
                                 </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
-                                    <div class="h6"><strong>$0</strong></div>
+                                    <div class="h6"><strong id="shippingAmount">${{ number_format($totalShippingCharge, 2) }}</strong>
+                                    </div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2 summery-end">
                                     <div class="h5"><strong>Total</strong></div>
-                                    <div class="h5"><strong>${{ Cart::subtotal() }}</strong></div>
+                                    <div class="h5"><strong id="grandTotal">${{number_format($grandTotal,2)}}</strong></div>
                                 </div>
                             </div>
                         </div>
@@ -296,6 +297,21 @@
                         }
                     } else {
                         window.location.href = "{{ url('/thanks/') }}/" + response.orderId;
+                    }
+                }
+            });
+        });
+
+        $("#country").change(function(){
+            $.ajax({
+                url: '{{route("front.getOrderSummary")}}',
+                type: "post",
+                data:{country_id: $(this).val()},
+                dataType: "json",
+                success: function(response){
+                    if(response.status == true){
+                        $("#shippingAmount").html('$'+response.shippingCharge);
+                        $("#grandTotal").html('$'+response.grandTotal);
                     }
                 }
             })

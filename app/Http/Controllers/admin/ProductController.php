@@ -104,7 +104,7 @@ class ProductController extends Controller
                     $image->save($destPath);
                 }
             }
-            $request->session()->flash('success', 'Product added successfully');
+            session()->flash('success', 'Product added successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Product added successfully'
@@ -120,7 +120,7 @@ class ProductController extends Controller
     {
         $product = Product::find($productId);
         if (empty($product)) {
-            $request->session()->flash('error', 'Record not found');
+            session()->flash('error', 'Record not found');
             return redirect()->route('products.index');
         }
         $productImage = ProductImage::where('product_id', $product->id)->get();
@@ -139,7 +139,7 @@ class ProductController extends Controller
     {
         $product = Product::find($productId);
         if (empty($product)) {
-            $request->session()->flash('error', 'Product Not Found');
+            session()->flash('error', 'Product Not Found');
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -183,7 +183,7 @@ class ProductController extends Controller
 
             //save image pic
 
-            $request->session()->flash('success', 'Product updated successfully');
+            session()->flash('success', 'Product updated successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Product updated successfully'
@@ -199,7 +199,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (empty($product)) {
-            $request->session()->flash('error', 'Product not found');
+            session()->flash('error', 'Product not found');
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -215,7 +215,7 @@ class ProductController extends Controller
             ProductImage::where('product_id', $id)->delete();
         }
         $product->delete();
-        $request->session()->flash('success', 'Product deleted successfully');
+        session()->flash('success', 'Product deleted successfully');
         return response()->json([
             'status' => 'success',
             'message' => 'Product deleted successfully',

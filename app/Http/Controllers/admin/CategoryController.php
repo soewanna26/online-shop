@@ -75,7 +75,7 @@ class CategoryController extends Controller
                 $category->save();
             }
 
-            $request->session()->flash('success', 'Category added successfully');
+            session()->flash('success', 'Category added successfully');
 
             return response()->json([
                 'status' => true,
@@ -104,7 +104,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($categoryId);
         if (empty($category)) {
-            $request->session()->flash('error', 'Record Not Found');
+            session()->flash('error', 'Record Not Found');
             return redirect()->route('categories.index');
         }
         return view('admin.category.edit', compact('category'));
@@ -117,7 +117,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($categoryId);
         if (empty($category)) {
-            $request->session()->flash('error', 'Category Not Found');
+            session()->flash('error', 'Category Not Found');
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -161,7 +161,7 @@ class CategoryController extends Controller
                 File::delete(public_path() . '/uploads/category/' . $oldImage);
             }
 
-            $request->session()->flash('success', 'Category Updated successfully');
+            session()->flash('success', 'Category Updated successfully');
 
             return response()->json([
                 'status' => true,
@@ -182,7 +182,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($categoryId);
         if (empty($category)) {
-            $request->session()->flash('error', 'Category Not Found');
+            session()->flash('error', 'Category Not Found');
             return response()->json([
                 'status' => 'error',
                 'message' => 'Category Not Found',
@@ -192,7 +192,7 @@ class CategoryController extends Controller
         File::delete(public_path() . '/uploads/category/thumb/' . $category->image);
         $category->delete();
 
-        $request->session()->flash('success', 'Category deleted successfully');
+        session()->flash('success', 'Category deleted successfully');
         return response()->json([
             'status' => 'success',
             'message' => 'Category deleted successfully',

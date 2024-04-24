@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\AuthController;
@@ -39,6 +40,7 @@ Route::post('/delete-item', [CartController::class, 'deleteItem'])->name('front.
 Route::get('/checkout',[CartController::class, 'checkout'])->name('front.checkout');
 Route::post('/process-checkout',[CartController::class, 'processCheckout'])->name('front.processCheckout');
 Route::get('/thanks/{orderId}',[CartController::class, 'thankyou'])->name('front.thankyou');
+Route::post('/get-order-summary',[CartController::class, 'getOrderSummary'])->name('front.getOrderSummary');
 
 Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'guest'], function () {
@@ -93,6 +95,13 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
         Route::get('/get-products', [ProductController::class, 'getProducts'])->name('products.getProducts');
+
+        //shipping
+        Route::get('/shippings/create',[ShippingController::class,'create'])->name('shippings.create');
+        Route::post('/shippings',[ShippingController::class,'store'])->name('shippings.store');
+        Route::get('/shippings/{id}/edit',[ShippingController::class,'edit'])->name('shippings.edit');
+        Route::put('/shippings/{id}',[ShippingController::class,'update'])->name('shippings.update');
+        Route::delete('/shippings/{id}',[ShippingController::class,'destroy'])->name('shippings.delete');
 
         //productsubcategory
         Route::get('/product-subcategories', [ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');

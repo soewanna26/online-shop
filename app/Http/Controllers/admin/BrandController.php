@@ -35,7 +35,7 @@ class BrandController extends Controller
             $brand->slug = $request->slug;
             $brand->status = $request->status;
             $brand->save();
-            $request->session()->flash('success', 'Brand created successfully');
+            session()->flash('success', 'Brand created successfully');
 
             return response([
                 'status' => true,
@@ -52,7 +52,7 @@ class BrandController extends Controller
     {
         $brand = Brand::find($brandId);
         if (empty($brand)) {
-            $request->session()->flash('error', 'Record not found');
+            session()->flash('error', 'Record not found');
             return redirect()->route('brands.index');
         }
         return view('admin.brand.edit', compact('brand'));
@@ -61,7 +61,7 @@ class BrandController extends Controller
     {
         $brand = Brand::find($brandId);
         if (empty($brand)) {
-            $request->session()->flash('error', 'Brand Not Found');
+            session()->flash('error', 'Brand Not Found');
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -77,7 +77,7 @@ class BrandController extends Controller
             $brand->slug = $request->slug;
             $brand->status = $request->status;
             $brand->save();
-            $request->session()->flash('success', 'Brand updated successfully');
+            session()->flash('success', 'Brand updated successfully');
 
             return response([
                 'status' => true,
@@ -94,7 +94,7 @@ class BrandController extends Controller
     {
         $brand = Brand::find($brandId);
         if (empty($brand)) {
-            $request->session()->flash('error', 'Brand Not Found');
+            session()->flash('error', 'Brand Not Found');
             return response()->json([
                 'status' => 'error',
                 'message' => 'Brand Not Found',
@@ -102,7 +102,7 @@ class BrandController extends Controller
         }
         $brand->delete();
 
-        $request->session()->flash('success', 'Brand deleted successfully');
+        session()->flash('success', 'Brand deleted successfully');
         return response()->json([
             'status' => 'success',
             'message' => 'Brand deleted successfully',
